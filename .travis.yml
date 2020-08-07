@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - "6"
+
+branches:
+  only:
+    - master
+
+# deploy전에 실행할 명령어
+before_deploy:
+  - mkdir -p deploy
+  - mv db.json deploy/db.json
+
+deploy:
+  - provider: s3
+    access_key_id: AKIASKVLXSMWHSGGHHOI
+    secret_access_key: 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
+    bucket: yhstest-bk
+    region: us-east-1
+    skip_cleanup: true
+    local_dir: deploy
+    acl: public_read
+    wait-until-deployed: true
+    on:
+      repo:  yunhyeonsik/yoon
+      branch: master
+
+after_deploy:
+  - echo "S3 업로드 끝났습니다."
